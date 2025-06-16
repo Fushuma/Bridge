@@ -1,0 +1,152 @@
+{
+  "tokens": [
+    {
+      "name": "Fushuma Coin",
+      "symbol": "FUMA",
+      "address": {
+        "56": "0x42c8d7460153178a8C3344DBE3EDc96A7Aa19322",
+        "1": "0x42c8d7460153178a8C3344DBE3EDc96A7Aa19322",
+        "137": "0x42c8d7460153178a8C3344DBE3EDc96A7Aa19322",
+        "121224": "0x0000000000000000000000000000000000000001",
+        "8453": "0x42c8d7460153178a8C3344DBE3EDc96A7Aa19322",
+        "130": "0x42c8d7460153178a8C3344DBE3EDc96A7Aa19322",
+        "42161": "0x42c8d7460153178a8C3344DBE3EDc96A7Aa19322"
+      },
+      "decimals": {
+        "56": 18,
+        "1": 18,
+        "137": 18,
+        "121224": 18,
+        "8453": 18,
+        "130": 18,
+        "42161": 18
+      },
+      "logoURI": "./images/Fushuma.svg"
+    },
+    {
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "variation": "eth",
+      "address": {
+        "1": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "121224": "0x1e11d176117dbEDbd234b1c6a10C6eb8dceD275e"
+      },
+      "decimals": {
+        "1": 6,
+        "121224": 18
+      },
+      "logoURI": "./images/usdt.png"
+    },
+    {
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "variation": "bsc",
+      "address": {
+        "56": "0x55d398326f99059fF775485246999027B3197955",
+        "121224": "0x9d0FB7b3fb7d37476aECcc47e29732460feB3be0"
+      },
+      "decimals": {
+        "56": 18,
+        "121224": 18
+      },
+      "logoURI": "./images/usdt.png"
+    },
+    {
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "address": {
+        "121224": "0xf8EA5627691E041dae171350E8Df13c592084848",
+        "8453": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+      },
+      "decimals": {
+        "121224": 18,
+        "8453": 18
+      },
+      "logoURI": "./images/usdc.png"
+    },
+    {
+      "name": "Binance Coin",
+      "symbol": "BNB",
+      "address": {
+        "56": "0x0000000000000000000000000000000000000001",
+        "121224": "0x27544116035a3dB6602268304117f6A056e58547"
+      },
+      "decimals": {
+        "20729": 18,
+        "820": 18,
+        "56": 18,
+        "121224": 18
+      },
+      "logoURI": "./images/coins/0xcCDe29903E621Ca12DF33BB0aD9D1ADD7261Ace9.png"
+    },
+    {
+      "name": "Ethereum Coin",
+      "symbol": "ETH",
+      "variation": "eth",
+      "address": {
+        "1": "0x0000000000000000000000000000000000000001",
+        "121224": "0x42c8d7460153178a8C3344DBE3EDc96A7Aa19322"
+      },
+      "decimals": {
+        "1": 18,
+        "121224": 18
+      },
+      "logoURI": "./images/coins/0xcC208c32Cc6919af5d8026dAB7A3eC7A57CD1796.png"
+    },
+    {
+      "name": "Ethereum Coin",
+      "symbol": "ETH",
+      "variation": "unichain",
+      "address": {
+        "121224": "0x4922caaf79952d9f987AC6a449f891bfE97B9389",
+        "130": "0x0000000000000000000000000000000000000001"
+      },
+      "decimals": {
+        "121224": 18,
+        "130": 18
+      },
+      "logoURI": "./images/coins/0xcC208c32Cc6919af5d8026dAB7A3eC7A57CD1796.png"
+    },
+    {
+      "name": "Ethereum Coin",
+      "symbol": "ETH",
+      "variation": "arbitrum",
+      "address": {
+        "121224": "0x6Dd5b658B6FA6242Cef0404F91951fC62741A3A3",
+        "42161": "0x0000000000000000000000000000000000000001"
+      },
+      "decimals": {
+        "121224": 18,
+        "42161": 18
+      },
+      "logoURI": "./images/coins/0xcC208c32Cc6919af5d8026dAB7A3eC7A57CD1796.png"
+    },
+    {
+      "name": "Ethereum Coin",
+      "symbol": "ETH",
+      "variation": "base",
+      "address": {
+        "121224": "0xdE88176B951E703B9ba7423FE1FED62e16e3F5E4",
+        "8453": "0x0000000000000000000000000000000000000001"
+      },
+      "decimals": {
+        "121224": 18,
+        "8453": 18
+      },
+      "logoURI": "./images/coins/0xcC208c32Cc6919af5d8026dAB7A3eC7A57CD1796.png"
+    },
+    {
+      "name": "Polygon Coin",
+      "symbol": "POL",
+      "address": {
+        "137": "0x0000000000000000000000000000000000000001",
+        "121224": "0x8095fa918029F28AEccE771E683Aa7dB587cDf07"
+      },
+      "decimals": {
+        "137": 18,
+        "121224": 18
+      },
+      "logoURI": "./images/polygon.svg"
+    }
+  ]
+}

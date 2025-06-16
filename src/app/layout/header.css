@@ -1,0 +1,69 @@
+.header {
+  justify-content: space-between !important;
+  padding: rem(20px) rem(100px);
+
+  @media only screen and (max-width: $md) {
+    padding: rem(20px) rem(45px);
+  }
+
+  p {
+    font-size: calc(10px + 0.7vmin);
+    font-family: 'Expletus-Regular';
+    color: value($color-basic, darker);
+    margin-right: rem(20px);
+  }
+
+  .nav-link {
+    color: value($color-basic, darker);
+  }
+
+  .dropdown-item {
+    color: value($color-primary, normal);
+  }
+
+  &__right {
+    display: flex;
+    font-family: 'Expletus-Regular';
+
+    @media only screen and (max-width: $md) {
+      padding-top: rem(20px);
+      padding-bottom: rem(20px);
+    }
+
+    a {
+      font-size: calc(10px + 0.7vmin);
+      color: value($color-basic, darker);
+      margin-right: rem(20px);
+      transition: all ease .3s;
+
+      &:hover {
+        color: #ce1f2e;
+        transition: all ease .3s;
+      }
+    }
+  }
+
+  .navbar-toggler {
+    display: none;
+
+    @media screen and (max-width: $md) {
+      display: block;
+    }
+  }
+
+  &__logo {
+    width: 220px;
+
+    @media only screen and (max-width: $sm) {
+      width: 160px;
+    }
+  }
+
+  .custombutton {
+    float: right;
+
+    @media screen and (max-width: $sm) {
+      font-size: 15px;
+    }
+  }
+}

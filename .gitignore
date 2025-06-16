@@ -1,0 +1,17 @@
+# Temporary folders and files
+.test/
+npm-debug.log
+
+# Distribution folders
+dist/
+
+# Packages folders
+node_modules/
+
+build/
+
+# Local Netlify folder
+.netlify
+
+# Local env
+.env*.local
