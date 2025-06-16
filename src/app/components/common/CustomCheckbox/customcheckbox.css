@@ -1,0 +1,70 @@
+/* stylelint-disable property-no-vendor-prefix */
+.customcheckbox {
+  .container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: 'NotoSans';
+    font-size: rem(18px);
+  }
+
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    transition: all ease .3s;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eeeeee;
+    border-radius: 100%;
+    transition: all ease .3s;
+  }
+
+  .container:hover input ~ .checkmark {
+    transition: all ease .3s;
+    background-color: #cccccc;
+  }
+
+  .container input:checked ~ .checkmark {
+    transition: all ease .3s;
+    background-color: value($color-primary, normal);
+  }
+
+  .checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+    transition: all ease .3s;
+  }
+
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  .container .checkmark:after {
+    transition: all ease .3s;
+    left: 8.5px;
+    top: 4px;
+    width: 7px;
+    height: 13px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+}

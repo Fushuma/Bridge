@@ -1,0 +1,76 @@
+/**
+ * Mixin to generate media suffixes for any class.
+ *
+ * Example:
+ * .a {
+ *   @include media-suffixes {
+ *     opacity: 1;
+ *   }
+ * }
+ *
+ * Generates the following css
+ * .a {
+ *   opacity: 0; }
+ *  @media screen and (max-width: 640px) {
+ *     .a\@xs {
+ *       opacity: 0; } }
+ *   @media screen and (max-width: 768px) {
+ *     .a\@s {
+ *       opacity: 0; } }
+ * ...
+ * And can be used like
+ * <div class="a@s">
+ * That means that the opacity of the div will
+ * be 0 for screens smaller or equal than 's' media query.
+ */
+
+@define-mixin media-suffixes {
+  @mixin-content;
+
+  @each ##key, ##value in entries($media) {
+    &\@##(key) {
+      @media screen and (max-width: ##value) {
+        @mixin-content;
+      }
+    }
+  }
+}
+
+$xl: 1539px;
+$lg: 1280px;
+$md: 991px;
+$sm: 767px;
+$xs: 479px;
+$width: normal;
+
+@define-mixin respond-to($media, $width: normal) {
+  @if ($width == normal) {
+    @if ($media == xl) {
+      @media only screen and (max-width: $xl) {
+        @mixin-content;
+      }
+    } @else if ($media == lg) {
+      @media only screen and (max-width: $lg) {
+        @mixin-content;
+      }
+    } @else if ($media == md) {
+      @media only screen and (max-width: $md) {
+        @mixin-content;
+      }
+    } @else if ($media == sm) {
+      @media only screen and (max-width: $sm) {
+        @mixin-content;
+      }
+    } @else if ($media == xs) {
+      @media only screen and (max-width: $xs) {
+        @mixin-content;
+      }
+    }
+  } @else {
+    @if ($media == md) {
+      @media only screen and (max-width: ($md - 121px)) {
+        @mixin-content;
+      }
+    }
+  }
+}

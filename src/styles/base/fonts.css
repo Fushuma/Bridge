@@ -1,0 +1,39 @@
+/**
+ * Font-face generator for all the fonts of the project,
+ * will be useful to add different files for each font.
+ */
+
+@font-face {
+  font-family: 'NotoSans';
+  font-path: '../../src/assets/fonts/NotoSans/NotoSans-Light';
+  font-weight: value($font-weight, light);
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSans';
+  font-path: '../../src/assets/fonts/NotoSans/NotoSans-Regular';
+  font-weight: value($font-weight, normal);
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSans';
+  font-path: '../../src/assets/fonts/NotoSans/NotoSans-Bold';
+  font-weight: value($font-weight, bold);
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Expletus-Regular';
+  src: url('../../src/assets/fonts/ExpletusSans/ExpletusSans-Regular.ttf');
+  font-weight: value($font-weight, light);
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Expletus-Bold';
+  src: url('../../src/assets/fonts/ExpletusSans/ExpletusSans-Bold.ttf');
+  font-weight: value($font-weight, normal);
+  font-style: normal;
+}
