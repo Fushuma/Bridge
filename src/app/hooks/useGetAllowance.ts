@@ -16,7 +16,7 @@ const useGetAllowance = (tokenAddress: string, succeed?: boolean, tokenChainId?:
           const tkContract = await getTokenContract(tokenAddress, library, account);
 
           if (tkContract) {
-            const allowance = await tkContract.allowance(account, bridgeAddr, { value: 0 });
+            const allowance = await tkContract.allowance(account, bridgeAddr);
             setAllowed(allowance.toString());
           }
         } catch (error) {
@@ -38,7 +38,7 @@ const useGetAllowance = (tokenAddress: string, succeed?: boolean, tokenChainId?:
     if (tokenAddress !== '') {
       const bridgeAddr = await getBridgeAddress(chainId);
       const tkContract = await getTokenContract(tokenAddress, library, account);
-      const tx = await tkContract.approve(bridgeAddr, ethers.constants.MaxUint256, { value: 0 });
+      const tx = await tkContract.approve(bridgeAddr, ethers.constants.MaxUint256);
       const receipt = await tx.wait();
       return receipt.status;
     }
