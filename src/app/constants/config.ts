@@ -15,7 +15,7 @@ export const blockConfirmations: { [chainId: number]: number } = {
   '56': 5,
   '1': 6,
   '137': 302,
-  '121224': 66,
+  '121224': 6,
   '8453': 302,
   '130': 602,
   '42161': 1202
