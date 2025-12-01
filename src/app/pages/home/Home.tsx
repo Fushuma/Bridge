@@ -44,14 +44,19 @@ export default function Home() {
 
   const onClickMetamask = async (connectorId: ConnectorNames) => {
     const chainId = prevChainId ?? 121224;
-    login(connectorId, NetworksObj[chainId]);
     const network = NetworksObj[chainId];
     dispatch(setFromNetwork(network));
-    if (network.symbol === 'ETH') {
-      await setupEthereumNetwork(network);
-    } else {
-      await setupNetwork(network);
+
+    // Only setup network if ethereum provider is available
+    if (window.ethereum) {
+      if (network.symbol === 'ETH') {
+        await setupEthereumNetwork(network);
+      } else {
+        await setupNetwork(network);
+      }
     }
+
+    login(connectorId, network);
     setPage('select');
   };
 
