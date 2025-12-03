@@ -96,7 +96,7 @@ export default function TokenList() {
           setCustomDecimals(contractDecimals);
         }
       } catch (e) {
-        console.log(e);
+        // Contract lookup failed - user will need to enter details manually
       }
     }
   };

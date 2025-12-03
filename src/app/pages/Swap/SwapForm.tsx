@@ -15,6 +15,7 @@ import SwapFooter from './SwapFooter';
 import { MIN_GAS_AMOUNT } from '~/app/constants';
 import { getBridgeAddress } from '~/app/utils/addressHelpers';
 import { getBridgeContract } from '~/app/utils';
+import { isValidAddress } from '~/app/utils/validation';
 import { ethers } from 'ethers';
 import './swapform.css';
 
@@ -38,7 +39,7 @@ const registerSchema = Yup.object().shape({
     .min(0, 'Too little')
 });
 
-const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`);
+const inputRegex = RegExp(`^\\d*(?:\\.)?\\d*$`);
 
 export default function SwapForm({
   submit,
@@ -139,11 +140,8 @@ export default function SwapForm({
 
   const onSubmit = (values: any) => {
     if (destination) {
-      if (
-        values.destination_wallet &&
-        values.destination_wallet.startsWith('0x') &&
-        values.destination_wallet.length === 42
-      ) {
+      // Use proper Ethereum address validation with checksum
+      if (values.destination_wallet && isValidAddress(values.destination_wallet)) {
         submit({
           ...values,
           swap_amount,
@@ -151,13 +149,7 @@ export default function SwapForm({
           amountsIn,
           amountsOut
         });
-      } else if (
-        values.destination_wallet &&
-        !values.destination_wallet.startsWith('0x') &&
-        values.destination_wallet.length !== 42
-      ) {
-        setDestinationError(true);
-      } else if (!values.destination) {
+      } else {
         setDestinationError(true);
       }
     } else {
@@ -344,9 +336,7 @@ export default function SwapForm({
                       swap_amount === '' ||
                       pending ||
                       (destination && !values.destination_wallet) ||
-                      (destination &&
-                        values.destination_wallet &&
-                        (!values.destination_wallet.startsWith('0x') || values.destination_wallet.length !== 42))
+                      (destination && values.destination_wallet && !isValidAddress(values.destination_wallet))
                     }
                   >
                     {pending ? (

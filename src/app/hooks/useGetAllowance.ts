@@ -34,11 +34,13 @@ const useGetAllowance = (tokenAddress: string, succeed?: boolean, tokenChainId?:
     }
   }, [library, account, chainId, tokenAddress, succeed, tokenChainId]);
 
-  const handleApprove = useCallback(async () => {
+  const handleApprove = useCallback(async (amount?: string) => {
     if (tokenAddress !== '') {
       const bridgeAddr = await getBridgeAddress(chainId);
       const tkContract = await getTokenContract(tokenAddress, library, account);
-      const tx = await tkContract.approve(bridgeAddr, ethers.constants.MaxUint256);
+      // Use exact amount if provided, otherwise use MaxUint256 as fallback
+      const approvalAmount = amount ? ethers.BigNumber.from(amount) : ethers.constants.MaxUint256;
+      const tx = await tkContract.approve(bridgeAddr, approvalAmount);
       const receipt = await tx.wait();
       return receipt.status;
     }

@@ -15,7 +15,6 @@ type props = {
 };
 
 export default function TokenSelection({ options, fromNetwork, className, onChange }: props) {
-  console.log(options);
   const { balance } = useSelector((state: AppState) => state.walletBridge);
   const [currentToken, setCurrentToken] = useState<IToken>();
 

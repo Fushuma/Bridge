@@ -17,6 +17,7 @@ import { setFromNetwork } from '~/app/modules/wallet/action';
 import { getBridgeContract, shortAddress } from '~/app/utils';
 import { submitClaimAction } from '~/app/utils/apiHelper';
 import getSignatures, { requiredSignatures } from '~/app/utils/getSignatures';
+import { validateClaimResponse } from '~/app/utils/validation';
 import { setSelectedToken } from '~/app/modules/wallet/action';
 import { getErc20Contract } from '~/app/hooks/wallet';
 import getWrappedTokenABI from '~/app/constants/abis/getWrappedToken.json';
@@ -92,6 +93,15 @@ export default function PreviousClaim() {
         );
         return;
       }
+
+      // Validate API response before proceeding
+      const validation = validateClaimResponse(respJSON);
+      if (!validation.valid) {
+        setPending(false);
+        toastError('Error!', validation.error || 'Invalid response from bridge API.');
+        return;
+      }
+
       if (respJSON.chainId !== chainId.toString()) {
         const toNetwork = Networks.find((item) => item.chainId === respJSON.chainId);
         try {
@@ -137,7 +147,7 @@ export default function PreviousClaim() {
           tokenData.decimals[chainId] = tokenDecimals;
           dispatch(setSelectedToken(tokenData));
         } catch (e) {
-          console.log(e);
+          // Token lookup failed - continue with claim
         }
         if (cloBalance < MIN_GAS_AMOUNT[121224] && chainId === 121224) {
           submitClaimAction(hash, fromNetwork.chainId)
@@ -156,7 +166,6 @@ export default function PreviousClaim() {
             })
             .catch((err) => {
               toastError(t('Failed to claim. Please try again.'));
-              console.log(err);
               setPending(false);
               setHash('');
             });
@@ -228,7 +237,6 @@ export default function PreviousClaim() {
             navigate('/transfer');
             toastSuccess(t('Success!'), t('Claimed successfully.'));
           } else {
-            console.log(receipt);
             setPending(false);
             toastError(t('Error!'), t('Failed to claim. Please try again.'));
           }
@@ -236,7 +244,6 @@ export default function PreviousClaim() {
         }
       }
     } catch (err: any) {
-      console.log(err);
       if (err.message.includes('Transaction already processed')) {
         toastError(t('Error!'), t('Transaction already claimed.'));
       } else {
@@ -278,13 +285,11 @@ export default function PreviousClaim() {
   const onChangeNetworkOne = async (option: INetwork) => {
     if (!switchingNetwork && option.name !== networkOne.name) {
       try {
-        console.log(option);
         setSwitchingNetwork(true);
         setNetworkOne(option);
         dispatch(setFromNetwork(option));
         switchNetwork(option, library, switchNetworkCatch);
       } catch (e) {
-        console.log(option);
         setNetworkOne(NetworksObj[chainId]);
         dispatch(setFromNetwork(NetworksObj[chainId]));
         setSwitchingNetwork(false);

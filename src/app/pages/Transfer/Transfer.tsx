@@ -35,7 +35,6 @@ export default function Transfer() {
   }, [account, navigate]);
 
   fetchSymbolRef.current = async () => {
-    console.log(selectedToken);
     if (selectedToken.isCustom) {
       const contract = getErc20Contract(selectedToken.toAddress, RPC_URL);
       const contractSymbol = await contract.symbol();

@@ -11,6 +11,7 @@ import { useGetCLOBalance1 } from '~/app/hooks/wallet';
 import useGetWalletState from '~/app/modules/wallet/hooks';
 import { submitClaimAction } from '~/app/utils/apiHelper';
 import getSignatures, { requiredSignatures } from '~/app/utils/getSignatures';
+import { validateClaimResponse } from '~/app/utils/validation';
 import { useSelector } from 'react-redux';
 import { blockConfirmations } from '~/app/constants/config';
 import ninja from '~/assets/images/ninja-transfer.png';
@@ -92,6 +93,14 @@ export default function Claim({ succeed, totalBlockCounts, isApproving, isAdding
       if (signatures.length < requiredSignatures) {
         setPending(false);
         toastError('Failed to fetch signatures.');
+        return;
+      }
+
+      // Validate API response before proceeding
+      const validation = validateClaimResponse(respJSON);
+      if (!validation.valid) {
+        setPending(false);
+        toastError(validation.error || 'Invalid response from bridge API.');
         return;
       }
 

@@ -336,7 +336,7 @@ const Swap = () => {
       if (bigAmount.gt(allowed)) {
         setPending(true);
         setIsApproving(true);
-        await onApprove();
+        await onApprove(bigAmount.toString());
         setIsApproving(false);
       }
     }
@@ -460,7 +460,7 @@ const Swap = () => {
           try {
             setPending(true);
             setIsApproving(true);
-            await onApprove();
+            await onApprove(bigAmount.toString());
             setIsApproving(false);
           } catch (err) {
             setPending(false);
