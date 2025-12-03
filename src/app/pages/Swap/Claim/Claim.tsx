@@ -11,6 +11,7 @@ import { useGetCLOBalance1 } from '~/app/hooks/wallet';
 import useGetWalletState from '~/app/modules/wallet/hooks';
 import { submitClaimAction } from '~/app/utils/apiHelper';
 import getSignatures, { requiredSignatures } from '~/app/utils/getSignatures';
+import { switchNetwork } from '~/app/utils/wallet';
 import { useSelector } from 'react-redux';
 import { blockConfirmations } from '~/app/constants/config';
 import ninja from '~/assets/images/ninja-transfer.png';
@@ -31,7 +32,7 @@ type props = {
 
 export default function Claim({ succeed, totalBlockCounts, isApproving, isAdding, isCreating, isTransfering }: props) {
   const [t] = useTranslation();
-  const { chainId } = useActiveWeb3React();
+  const { chainId, library } = useActiveWeb3React();
   const navigate = useNavigate();
 
   const [pending, setPending] = useState(false);
@@ -96,9 +97,15 @@ export default function Claim({ succeed, totalBlockCounts, isApproving, isAdding
       }
 
       if (respJSON.chainId !== chainId.toString()) {
-        toastError(`You are in wrong network. Please switch to ${toNetwork.name}.`);
-        setPending(false);
-        return;
+        // Auto-switch to the correct network
+        const switched = await switchNetwork(toNetwork, library);
+        if (!switched) {
+          toastError(`Please switch to ${toNetwork.name} to claim.`);
+          setPending(false);
+          return;
+        }
+        // Wait a moment for the network switch to complete
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       if (swapType === 'swap') handleClaim(signatures, respJSON);
