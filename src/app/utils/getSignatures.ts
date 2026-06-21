@@ -60,9 +60,7 @@ const getSignaturesClaim = async (hash: string, chainId: string) => {
 };
 
 export const getSignaturesAddWrapped = async (token: `0x${string}`, chainId: number) => {
-  const { signatures, respJSON } = await collectSignatures(
-    (base) => `${base}addToken?token=${token}&chain=${chainId}`
-  );
+  const { signatures, respJSON } = await collectSignatures((base) => `${base}addToken?token=${token}&chain=${chainId}`);
 
   if (signatures.length < requiredSignatures) {
     return { signatures: [], respJSON };
