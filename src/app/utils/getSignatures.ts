@@ -7,71 +7,68 @@ export const sigs = [
 
 export const requiredSignatures = 3;
 
-const fetchSig = async (url: string) => {
-  try {
-    const res = await fetch(url);
-    return res;
-  } catch (e) {
-    console.log(e);
-    setTimeout(async () => {
-      return await fetchSig(url);
-    }, 1000);
+const MAX_ATTEMPTS = 2;
+const RETRY_DELAY_MS = 1000;
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Fetch a single signature endpoint and return its parsed JSON body.
+// Returns `null` instead of throwing when a server is unreachable, blocked by
+// CORS, responds with an HTTP error (e.g. 403), or returns an unparsable body.
+// This keeps one misbehaving server from aborting the whole signature round and
+// avoids the fire-and-forget background retry loop the previous version spawned.
+const fetchSigJSON = async (url: string): Promise<any | null> => {
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        // HTTP error (403/5xx/etc). Don't retry – it won't recover in time.
+        console.warn(`Signature server responded with ${res.status}: ${url}`);
+        return null;
+      }
+      return await res.json();
+    } catch (e) {
+      // Network / CORS failure. Retry once for transient blips, then give up.
+      console.warn(`Signature server request failed (attempt ${attempt}/${MAX_ATTEMPTS}): ${url}`, e);
+      if (attempt < MAX_ATTEMPTS) {
+        await delay(RETRY_DELAY_MS);
+      }
+    }
   }
+  return null;
 };
 
-const getSignaturesClaim = async (hash: string, chainId: string) => {
+const collectSignatures = async (buildUrl: (base: string) => string) => {
   const signatures: any[] = [];
   let respJSON: any;
 
-  async function checkSignature(i: number) {
-    const url = `${sigs[i]}auth?tx=${hash}&chain=${chainId}`;
-    const resp = await fetchSig(url);
-    respJSON = await resp.json();
-
-    if (respJSON.isSuccess) {
-      signatures.push(respJSON.signature);
-      if (signatures.length >= requiredSignatures) {
-        return { signatures, respJSON };
-      }
-    }
-
-    // Some tests showed that this could cause infinite loop
-
-    // else if (respJSON.message.includes('Confirming')) {
-    //   return new Promise((resolve) => {
-    //     setTimeout(async () => {
-    //       const result = await checkSignature(i);
-    //       resolve(result);
-    //     }, 1000);
-    //   });
-    // }
-  }
-
   for (let i = 0; i < sigs.length; i++) {
-    await checkSignature(i);
+    if (signatures.length >= requiredSignatures) break;
+
+    const json = await fetchSigJSON(buildUrl(sigs[i]));
+    if (json && json.isSuccess) {
+      respJSON = json;
+      signatures.push(json.signature);
+    }
   }
 
   return { signatures, respJSON };
 };
 
+const getSignaturesClaim = async (hash: string, chainId: string) => {
+  return collectSignatures((base) => `${base}auth?tx=${hash}&chain=${chainId}`);
+};
+
 export const getSignaturesAddWrapped = async (token: `0x${string}`, chainId: number) => {
-  const signatures: any[] = [];
-  let respJSON: any;
+  const { signatures, respJSON } = await collectSignatures(
+    (base) => `${base}addToken?token=${token}&chain=${chainId}`
+  );
 
-  for (let i = 0; i < sigs.length; i++) {
-    const url = `${sigs[i]}addToken?token=${token}&chain=${chainId}`;
-    const resp = await fetchSig(url);
-    respJSON = await resp.json();
-
-    if (respJSON.isSuccess) {
-      signatures.push(respJSON.signature);
-      if (signatures.length >= requiredSignatures) {
-        return { signatures, respJSON };
-      }
-    }
+  if (signatures.length < requiredSignatures) {
+    return { signatures: [], respJSON };
   }
 
-  return { signatures: [], respJSON };
+  return { signatures, respJSON };
 };
 
 // const getFirstSig = async (url: string) => {
